@@ -30,8 +30,8 @@ Module Module1
 
         Dim outputLines As New List(Of OutputLine)
 
-        Dim r1 As Regex = New Regex("sn(\d{2})-c(\d{2})")
-        Dim r2 As Regex = New Regex("\*\* Group (\d+)")
+        Dim r1 As Regex = New Regex("\*\* Group (\d+)")
+        Dim r2 As Regex = New Regex("sn(\d{2})-c(\d{2})")
 
         Dim r3 As Regex = New Regex("Group (\d+) Result")
         Dim r4 As Regex = New Regex("HPL LINPACK:\s+(.+)")
@@ -44,20 +44,20 @@ Module Module1
 
             Dim lines As String() = IO.File.ReadAllLines(file)
 
-            outputLines.Add(New OutputLine With {.Group = "0", .Chassis = CurrentChassis})
+            'outputLines.Add(New OutputLine With {.Group = "0", .Chassis = CurrentChassis})
 
             For i As Integer = 0 To lines.Count - 3
                 Dim m1 As Match = r1.Match(lines(i))
 
                 If Not String.IsNullOrWhiteSpace(m1.Value) Then
 
-                    Dim m2 As Match = r2.Match(lines(i + 1))
+                    Dim m2 As Match = r2.Match(lines(i + 2))
 
                     If Not String.IsNullOrWhiteSpace(m2.Value) Then
 
-                        AddOutput(outputLines, New OutputLine With {.Chassis = m1.Groups(1).Value,
-                                                                .Cartridge = m1.Groups(2).Value,
-                                                                .Group = m2.Groups(1).Value})
+                        AddOutput(outputLines, New OutputLine With {.Chassis = m2.Groups(1).Value,
+                                                                .Cartridge = m2.Groups(2).Value,
+                                                                .Group = m1.Groups(1).Value})
 
 
                     End If
